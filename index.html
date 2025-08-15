@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leukemia Gene Expression Classification using Machine Learning</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* Light gray background */
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Lora', serif;
+        }
+        .prose { max-width: 100%; }
+        .prose p { text-align: justify; }
+        .prose code { background-color: #e5e7eb; padding: 0.2em 0.4em; margin: 0; font-size: 85%; border-radius: 6px; }
+        .prose pre { background-color: #1e293b; color: #e2e8f0; border-radius: 8px; padding: 1.25rem; padding-top: 2rem; position: relative; overflow-x: auto; }
+        .prose pre code { background-color: transparent; padding: 0; }
+        .prose table { width: 100%; border-collapse: collapse; }
+        .prose th, .prose td { border: 1px solid #d1d5db; padding: 0.75rem 1rem; text-align: left; }
+        .prose th { background-color: #f1f5f9; font-weight: 600; }
+        .prose a { color: #2563eb; text-decoration: none; font-weight: 500; }
+        .prose a:hover { text-decoration: underline; }
+        .top-nav-link {
+            padding: 0.75rem 1rem;
+            color: #334155;
+            font-weight: 600;
+            transition: all 0.2s ease-in-out;
+            border-bottom: 4px solid transparent;
+            white-space: nowrap;
+        }
+        .top-nav-link:hover {
+            color: #1d4ed8;
+            border-bottom-color: #93c5fd;
+        }
+        .top-nav-link.active {
+            color: #1e3a8a;
+            border-bottom-color: #3b82f6;
+        }
+        /* Global section padding and margin for scroll-spy */
+        section {
+            padding-top: 5.5rem;
+            margin-top: -4.5rem;
+            margin-bottom: 3rem;
+            /* Styles for scroll animation */
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        /* Added gallery image cursor */
+        .results-gallery img {
+            cursor: pointer;
+            transition: transform 0.2s ease-in-out;
+        }
+        .results-gallery img:hover {
+            transform: scale(1.03);
+        }
+        /* Added lightbox styles */
+        .lightbox {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.85);
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .lightbox-content {
+            max-width: 90%;
+            max-height: 85%;
+            border-radius: 8px;
+            animation: zoomIn 0.3s ease;
+        }
+        @keyframes zoomIn {
+            from { transform: scale(0.9); }
+            to { transform: scale(1); }
+        }
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 35px;
+            color: #fff;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+        .lightbox-close:hover {
+            color: #bbb;
+        }
+        /* Added footer styles */
+        .footer-links a {
+            color: #475569;
+            text-decoration: none;
+        }
+        .footer-links a:hover {
+            color: #1e40af;
+            text-decoration: underline;
+        }
+        .footer-separator {
+            color: #cbd5e1;
+            margin: 0 0.5rem;
+        }
+    </style>
+</head>
+<body class="text-slate-700">
+
+    <!-- Header remains the same -->
+    <header class="bg-white shadow-md py-6 w-full z-20">
+        <div class="max-w-screen-xl mx-auto px-6 text-center">
+            <h1 class="text-4xl md:text-5xl font-bold text-slate-900">Leukemia Gene Expression Classification using Machine Learning</h1>
+            <p class="mt-2 text-xl text-slate-600">Tharun H</p>
+        </div>
+        <nav id="top-nav" class="bg-white border-t border-b border-slate-200 mt-6">
+            <div class="max-w-screen-xl mx-auto flex justify-center items-center overflow-x-auto">
+                <a href="#abstract" class="top-nav-link">Abstract</a>
+                <a href="#introduction" class="top-nav-link">Introduction</a>
+                <a href="#methodology" class="top-nav-link">Methodology</a>
+                <a href="#results" class="top-nav-link">Results</a>
+                <a href="#conclusion" class="top-nav-link">Conclusion</a>
+                <a href="#discussion" class="top-nav-link">Discussion</a>
+                <a href="#references" class="top-nav-link">References</a>
+            </div>
+        </nav>
+    </header>
+
+    <div class="max-w-screen-xl mx-auto px-6 flex flex-col lg:flex-row gap-12">
+        <!-- Main Content -->
+        <main class="w-full">
+            <div class="bg-white shadow-lg rounded-lg p-8 md:p-12 mt-12 prose">
+
+                <section id="abstract">
+                    <h2 class="text-3xl font-semibold text-slate-800 border-l-4 border-blue-500 pl-4 mb-6">Abstract</h2>
+                    <p>This project applies machine learning models to the GSE9476 leukemia gene expression dataset from the Curated Microarray Database (CuMiDa). The goal is to classify 64 patient samples into 5 distinct classes. Four key models were evaluated: Logistic Regression, KNN, Random Forest, and XGBoost. The analysis utilized various performance metrics, including confusion matrices, ROC curves, and Precision-Recall curves, to assess the effectiveness of each algorithm. The study aims to identify the most robust model for this multi-class classification challenge, demonstrating the potential of machine learning in computational oncology and diagnostics.</p>
+                </section>
+
+                <section id="introduction">
+                    <h2 class="text-3xl font-semibold text-slate-800 border-l-4 border-blue-500 pl-4 mb-6">Introduction</h2>
+                    <h3 class="text-xl font-bold text-blue-700 mt-6 mb-4">Dataset Overview</h3>
+                    <p>The foundation of this analysis is the GSE9476 leukemia gene expression dataset, which is part of the Curated Microarray Database (CuMiDa). CuMiDa is a repository of 78 carefully selected cancer microarray datasets, meticulously curated from over 30,000 studies from the Gene Expression Omnibus (GEO) specifically for machine learning applications. This particular dataset consists of 64 patient samples, each with 22,284 genes, categorized into 5 distinct classes. The thorough curation process of CuMiDa ensures the data is high-quality, reliable, and ready for computational research, making it an ideal source for this project.</p>
+                    <h3 class="text-xl font-bold text-blue-700 mt-6 mb-4">Preprocessing Pipeline</h3>
+                    <p>Before model training, the raw data underwent a preprocessing pipeline. The `type` column, which contains the 5 classes, was converted from categorical strings into numerical values using a `LabelEncoder`. This step is crucial for preparing the data for machine learning algorithms. The dataset was then split into training and testing sets to ensure the models could be evaluated on unseen data. A stratified split was not explicitly used based on the code, but a consistent random state was applied to maintain reproducibility.</p>
+                </section>
+
+                <section id="methodology">
+                    <h2 class="text-3xl font-semibold text-slate-800 border-l-4 border-blue-500 pl-4 mb-6">Methodology</h2>
+                    <p>The core of the methodology involved training and evaluating four distinct machine learning models on the preprocessed data. A 80-20 train-test split was used, and a consistent random state ensured reproducibility. The evaluation framework was built around several key visualization and metric types to comprehensively assess model performance, particularly in this multi-class classification problem.</p>
+                    
+                    <div class="mt-8">
+                        <h3 class="text-2xl font-semibold text-slate-700 border-b-2 border-blue-200 pb-2 mb-6">Model Evaluation Metrics</h3>
+                        
+                        <div class="mb-12 results-gallery">
+                            <h4 class="text-xl font-bold text-blue-700 mt-6 mb-4">Target Distribution</h4>
+                            <p>This visualization was used to understand the class balance within our dataset. It plots the count of samples for each of the 5 classes. This is essential for identifying potential biases in the data that could affect model training and evaluation, as an imbalanced dataset might require specialized handling to prevent a model from being biased toward the majority class.</p>
+                            <div class="grid grid-cols-1 mt-4">
+                                <div class="border p-4 rounded-lg shadow-sm bg-blue-50 space-y-4"><h5 class="font-bold text-center text-blue-700">Class Distribution</h5><img src="https://placehold.co/700x500/e0f2fe/1e40af?text=Class+Distribution+Bar+Chart" alt="Target Class Distribution" class="w-full max-w-lg mx-auto rounded shadow-md border border-blue-200"></div>
+                            </div>
+                        </div>
+
+                        <!-- Added 'results-gallery' class for lightbox functionality -->
+                        <div class="mb-12 results-gallery">
+                            <h4 class="text-xl font-bold text-blue-700 mt-6 mb-4">Confusion Matrices</h4>
+                            <p>These were used to visualize the performance of each classification model. For a multi-class problem, a confusion matrix provides a detailed breakdown of correct and incorrect predictions for each of the 5 classes, showing the number of true positives and false positives/negatives for each category. This is crucial for understanding a model's accuracy in distinguishing between the different leukemia subtypes, as it reveals exactly where the model is making errors.</p>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-4">
+                                <div class="border p-4 rounded-lg shadow-sm bg-blue-50 space-y-4"><h5 class="font-bold text-center text-blue-700">Logistic Regression</h5><img src="https://placehold.co/400x300/e0f2fe/1e40af?text=Logistic+Regression+Confusion+Matrix" alt="Logistic Regression Confusion Matrix" class="rounded shadow-md border border-blue-200"></div>
+                                <div class="border p-4 rounded-lg shadow-sm bg-blue-50 space-y-4"><h5 class="font-bold text-center text-blue-700">K-Nearest Neighbors</h5><img src="https://placehold.co/400x300/e0f2fe/1e40af?text=KNN+Confusion+Matrix" alt="KNN Confusion Matrix" class="rounded shadow-md border border-blue-200"></div>
+                                <div class="border p-4 rounded-lg shadow-sm bg-blue-50 space-y-4"><h5 class="font-bold text-center text-blue-700">Random Forest</h5><img src="https://placehold.co/400x300/e0f2fe/1e40af?text=Random+Forest+Confusion+Matrix" alt="Random Forest Confusion Matrix" class="rounded shadow-md border border-blue-200"></div>
+                                <div class="border p-4 rounded-lg shadow-sm bg-blue-50 space-y-4"><h5 class="font-bold text-center text-blue-700">XGBoost</h5><img src="https://placehold.co/400x300/e0f2fe/1e40af?text=XGBoost+Confusion+Matrix" alt="XGBoost Confusion Matrix" class="rounded shadow-md border border-blue-200"></div>
+                            </div>
+                        </div>
+
+                        <div class="mb-12 results-gallery">
+                            <h4 class="text-xl font-bold text-blue-700 mt-6 mb-4">Model Performance</h4>
+                            <p>A summary bar chart was created to directly compare the final accuracy and precision scores of all four models. This provides a clear, at-a-glance view of how each model performed on the test data and allows for a quick comparison to identify the top-performing algorithm for this classification task.</p>
+                            <div class="grid grid-cols-1 mt-4">
+                                <div class="border p-4 rounded-lg shadow-sm bg-blue-50 space-y-4"><h5 class="font-bold text-center text-blue-700">Model Performance Comparison</h5><img src="https://placehold.co/700x500/e0f2fe/1e40af?text=Model+Comparison+Bar+Chart" alt="Model Comparison Bar Chart" class="w-full max-w-lg mx-auto rounded shadow-md border border-blue-200"></div>
+                            </div>
+                        </div>
+
+                        <div class="mb-12 results-gallery">
+                            <h4 class="text-xl font-bold text-blue-700 mt-6 mb-4">Heatmap of Gene Expression</h4>
+                            <p>Heatmaps were used to visualize the correlation structure and gene expression patterns within the dataset. This provides a glimpse into the complexity of the data and helps in understanding the relationships between different genes and samples, which can be crucial for discovering biologically significant patterns.</p>
+                            <div class="grid grid-cols-1 mt-4">
+                                <div class="border p-4 rounded-lg shadow-sm bg-blue-50 space-y-4"><h5 class="font-bold text-center text-blue-700">Correlation Heatmap</h5><img src="https://placehold.co/700x500/e0f2fe/1e40af?text=Correlation+Heatmap" alt="Correlation Heatmap" class="w-full max-w-lg mx-auto rounded shadow-md border border-blue-200"></div>
+                            </div>
+                        </div>
+
+                        <div class="mb-12 results-gallery">
+                             <h4 class="text-xl font-bold text-blue-700 mt-6 mb-4">ROC Curves (Receiver Operating Characteristic)</h4>
+                             <p>The ROC curve is a graphical plot that illustrates the diagnostic ability of a multi-class classifier system. We generated a combined plot to compare the Area Under the Curve (AUC) for each model and class, where a higher AUC represents a better measure of separability between the classes. This is a robust way to evaluate a model's performance independent of the classification threshold.</p>
+                             <div class="grid grid-cols-1 mt-4">
+                                 <div class="border p-4 rounded-lg shadow-sm bg-blue-50 space-y-4"><h5 class="font-bold text-center text-blue-700">Comparative ROC Curve</h5><img src="https://placehold.co/700x500/e0f2fe/1e40af?text=Multi-Class+ROC+Curve" alt="Comparative ROC Curve for all models" class="w-full max-w-lg mx-auto rounded shadow-md border border-blue-200"></div>
+                             </div>
+                        </div>
+
+                        <div class="mb-12 results-gallery">
+                            <h4 class="text-xl font-bold text-blue-700 mt-6 mb-4">Precision-Recall Curve</h4>
+                            <p>For each class, a Precision-Recall curve was generated. This plot is especially useful for imbalanced datasets, as it highlights the trade-off between precision (the accuracy of positive predictions) and recall (the ability to find all positive instances). A good model will have a curve that remains close to the top-right corner, indicating high performance on both metrics.</p>
+                            <div class="grid grid-cols-1 mt-4">
+                                <div class="border p-4 rounded-lg shadow-sm bg-blue-50 space-y-4"><h5 class="font-bold text-center text-blue-700">Comparative Precision-Recall Curve</h5><img src="https://placehold.co/700x500/e0f2fe/1e40af?text=Multi-Class+Precision-Recall+Curve" alt="Comparative Precision-Recall Curve" class="w-full max-w-lg mx-auto rounded shadow-md border border-blue-200"></div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="results">
+                    <h2 class="text-3xl font-semibold text-slate-800 border-l-4 border-blue-500 pl-4 mb-6">Results</h2>
+                    <p class="mb-6">The empirical results from our comparative analysis provide a clear picture of model performance on the GSE9476 leukemia dataset. After training and testing Logistic Regression, K-Nearest Neighbors (KNN), Random Forest, and XGBoost models, we evaluated their effectiveness using accuracy and precision as our primary metrics. The performance table below summarizes the outcomes for each model on the held-out test set. It is immediately apparent that while all models perform commendably, the Logistic Regression algorithm delivered exceptional results, achieving a perfect accuracy. This highlights its potential as a simple yet powerful tool for this type of multi-class bioinformatics classification challenge.</p>
+                    <div class="overflow-x-auto my-6">
+                        <table>
+                            <thead><tr><th>Model</th><th>Accuracy (Test)</th><th>Precision (Test)</th></tr></thead>
+                            <tbody>
+                                <tr><td class="font-bold text-blue-700">Logistic Regression</td><td class="font-bold text-blue-700">1.0000</td><td class="font-bold text-blue-700">1.00</td></tr>
+                                <tr><td>K-Nearest Neighbors</td><td>0.9231</td><td>0.95</td></tr>
+                                <tr><td>Random Forest</td><td>0.9231</td><td>0.95</td></tr>
+                                <tr><td>XGBoost</td><td>0.9231</td><td>0.95</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- Added 'results-gallery' class for lightbox functionality -->
+                    <div class="bg-blue-50 border border-blue-400 p-6 rounded-lg my-8 results-gallery">
+                        <h3 class="text-xl font-bold text-blue-700 mt-0 mb-4">Highlight: Logistic Regression's Superior Performance</h3>
+                        <p>The Logistic Regression model consistently outperformed other models, achieving a perfect Accuracy of 1.0000 and a Precision of 1.00. Its confusion matrix shows zero misclassifications on the test set, confirming its reliability and suitability for this dataset.</p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-6">
+                            <div class="border p-4 rounded-lg shadow-sm bg-white"><h4 class="font-bold text-center mb-4">Logistic Regression Confusion Matrix</h4><img src="https://placehold.co/400x300/e0f2fe/1e40af?text=Logistic+Regression+Confusion+Matrix" alt="Logistic Regression Confusion Matrix" class="rounded shadow-md border border-blue-200"></div>
+                            <div class="border p-4 rounded-lg shadow-sm bg-white"><h4 class="font-bold text-center mb-4">Logistic Regression Classification Report</h4><img src="https://placehold.co/400x300/e0f2fe/1e40af?text=Logistic+Regression+Classification+Report" alt="Logistic Regression Classification Report" class="rounded shadow-md border border-blue-200"></div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="conclusion">
+                    <h2 class="text-3xl font-semibold text-slate-800 border-l-4 border-blue-500 pl-4 mb-6">Conclusion</h2>
+                    <p>In conclusion, this project successfully demonstrates that classical machine learning models, when applied to a high-quality, curated dataset like GSE9476 from CuMiDa, are highly effective for classifying leukemia gene expression data. The key finding is the superior and perfect performance of the Logistic Regression model, which achieved outstanding accuracy and precision on the test set. This suggests that the underlying linear structure of the gene expression data is well-suited for a linear classifier. The results affirm that even without resorting to more complex deep learning architectures, significant diagnostic insights can be extracted from genomic data.</p>
+                </section>
+                
+                <section id="discussion">
+                    <h2 class="text-3xl font-semibold text-slate-800 border-l-4 border-blue-500 pl-4 mb-6">Discussion</h2>
+                    <p>While the Logistic Regression model excelled, the strong performance of other models indicates the dataset's high quality and the effectiveness of the preprocessing steps. One limitation of this study is the warning message about the `lbfgs` solver for Logistic Regression failing to converge. This suggests that while the model performed well on the test data, a systematic hyperparameter tuning process (e.g., increasing `max_iter` or using a different solver) could further enhance its robustness. Furthermore, the use of k-fold cross-validation would provide a more robust estimate of model generalizability than a single train-test split. For future work and potential clinical applications, this pipeline could serve as a solid baseline. Critical next steps would involve validating the best-performing model on an independent, external dataset to test its real-world efficacy. Exploring more advanced techniques, such as deep learning models (e.g., Autoencoders for feature learning or 1D-CNNs), could uncover complex non-linear relationships within the data, potentially leading to even more accurate diagnostic tools and deeper biological insights.</p>
+                </section>
+
+                <section id="references">
+                    <h2 class="text-3xl font-semibold text-slate-800 border-l-4 border-blue-500 pl-4 mb-6">References</h2>
+                    <p>CuMiDa: Curated Microarray Database. (n.d.). Datasets for machine learning in cancer research. Retrieved from <a href="https://cumida.org/" target="_blank" rel="noopener noreferrer">https://cumida.org/</a></p>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- NEW: Updated footer section -->
+    <footer class="text-center py-8 text-slate-500 w-full border-t mt-12 bg-white">
+        <p class="font-semibold">&copy; 2024 Tharun H</p>
+        <div class="footer-links mt-2">
+            <a href="mailto:htharun21@gmail.com">htharun21@gmail.com</a><span class="footer-separator">|</span>
+            <a href="tel:+917338382872">+91 73383 82872</a><span class="footer-separator">|</span>
+            <a href="https://github.com/TharunH718" target="_blank">GitHub Profile</a>
+        </div>
+    </footer>
+
+    <!-- NEW: Lightbox Modal HTML -->
+    <div id="lightbox" class="lightbox">
+        <span class="lightbox-close">&times;</span>
+        <img class="lightbox-content" id="lightbox-img">
+    </div>
+
+    <!-- NEW: Consolidated and updated script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- Script for active nav link on scroll ---
+            const sections = document.querySelectorAll('section[id]');
+            const navLinks = document.querySelectorAll('#top-nav a');
+            const observerOptions = {
+                rootMargin: "-40% 0px -60% 0px" // a horizontal line in the middle of the viewport
+            };
+
+            const sectionObserver = new IntersectionObserver((entries) => {
+                let currentSectionId = '';
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        currentSectionId = entry.target.id;
+                    }
+                });
+
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href').substring(1) === currentSectionId) {
+                        link.classList.add('active');
+                    }
+                });
+            }, observerOptions);
+
+            sections.forEach(section => sectionObserver.observe(section));
+
+            // --- Script for smooth scrolling ---
+            // This is handled by `scroll-smooth` class in <html> and anchor hrefs, but this is a JS alternative
+            navLinks.forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    const href = this.getAttribute('href');
+                    // Check if it's a valid hash link
+                    if (href.startsWith('#')) {
+                        e.preventDefault();
+                        document.querySelector(href).scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+
+            // --- Script for section visibility animation on scroll ---
+            const animationObserver = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            sections.forEach(section => {
+                animationObserver.observe(section);
+            });
+            
+            // --- Script for lightbox functionality ---
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = document.getElementById('lightbox-img');
+            const galleryImages = document.querySelectorAll('.results-gallery img');
+            const closeBtn = document.querySelector('.lightbox-close');
+
+            galleryImages.forEach(img => {
+                img.addEventListener('click', () => {
+                    lightbox.style.display = 'flex';
+                    lightboxImg.src = img.src;
+                });
+            });
+            
+            const closeLightbox = () => {
+                lightbox.style.display = 'none';
+            }
+
+            closeBtn.addEventListener('click', closeLightbox);
+            
+            lightbox.addEventListener('click', (e) => {
+                // Close if the click is on the background, not the image itself
+                if (e.target !== lightboxImg) {
+                    closeLightbox();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
